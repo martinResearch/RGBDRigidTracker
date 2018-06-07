@@ -4,14 +4,12 @@ the goal of this project is to get an algorithm that can track known rigid objec
 
 # Method
 
-The rigid object is provided as a three dimensional triangulated surface in the wavefront OBJ files.
-It is provided in two file: one bj file with texture coordinates, and a obj file that may not have texture coordinate but has a densier set of vertices (it can be obtained using meshlab).
+The rigid object is provided as a three dimensional triangulated surface in the wavefront OBJ files. It is provided in two file: one OPJ file with texture coordinates, and an OBJ file that may not have texture coordinate but has a denser set of vertices (it can be obtained using MeshLab).
 
+In order to generate synthetic RGBD data, we render the textured model in various poses using OpenGL. Using OpenGL we also generate an array that contains the xyz coordinate of the point projecting on each pixel in the camera 3D coordinate system and we generate point clouds in both the point cloud library format and the ptx format (that can be opened in MeshLab).
 
-In order to generate synthetic RGBD data, we render the textured model in various poses using opengl. Using OpenGL we also generate an array that contains the xyz coordinate of the point projecting on each pixel in the camera 3D coordinate system and we generate point cloudds in both the point cloud library format and the ptx format (that can be opened in MeshLab).
+We then track the rigid object in the sequence of generated point clouds using the Point Cloud Library. We find the pose in the first point cloud using the SampleConsensusInitialAlignmentmethod using FPFHSignature33 Features. Assuming that the object has a only a small displacement between each successive frame, we use the Iterative Closest Point method to refine the pose in each frame using the pose in the previous frame as initialisation. We could use a linear dynamic model to predict the pose from previous frames but this is beyond the scope of this project.
 
-We then track the rigid object in the sequence of generated point clouds using the Point Cloud Library. We find the pose in the first point cloud using the *SampleConsensusInitialAlignment* method using *FPFHSignature33* Features.
-Assuming that the object has a only a small deplacement between each sucessive frame, we use the Iterative Closest Point method to refine the pose in each frame using the pose in the previous frame as initialization. We could use a linear dynamic model to predict the pose from previous frames but this is beyong the scope of this project.
 
 # Compiling the code
 
@@ -26,7 +24,7 @@ Assuming that the object has a only a small deplacement between each sucessive f
 **Note that this has been tested only on windows**.
 
 You need first to install the python dependencies to generate the synthetic test dataset (see instruction below).
-You need to install the Point CLoud Library in order to compile the C++ tracking code.
+You need to install the Point Cloud Library in order to compile the C++ tracking code.
 
 
 ## Generating RGBD testing images
@@ -35,7 +33,7 @@ run the *RGBDSequenceGeneration.py* script in python
 
 	python RGBDSequenceGeneration.py
 
-this will use OpenGl to generate in the *sequence\crate* subfolder a set of images and point clouds in both the pcd format and ptx formats. You can open the ptx files in MeshLab to visualize the synthetized data. In order to ease visualizatio of the generated data, a animated gid is created.
+this will use OpenGL to generate in the *sequence\crate* subfolder a set of images and point clouds in both the pcd format and ptx formats. You can open the ptx files in MeshLab to visualise the synthesised data. In order to ease visualizatio of the generated data, a animated gif is created.
 
 
 ![image](./images/crate_rgbd.gif)
@@ -43,7 +41,7 @@ this will use OpenGl to generate in the *sequence\crate* subfolder a set of imag
  
 Some alternative method to generate synthetic data could be to use:
 
- * the PCL method [pcl::RangeImage.createFromPointCloud](http://pointclouds.org/documentation/tutorials/range_image_creation.php). But it would require to generqte a very dense sampling of th esurface first.
+ * the PCL method [pcl::RangeImage.createFromPointCloud](http://pointclouds.org/documentation/tutorials/range_image_creation.php). But it would require to generqte a very dense sampling of the surface first.
  *  the PCL's *pcl\_virtual\_scanner\_release.exe* executable with code [here](https://github.com/PointCloudLibrary/pcl/blob/master/tools/virtual_scanner.cpp).  It uses VTK's *vtkCellLocator* function to performe ray / mesh intersections.
  * [render kinect](https://github.com/jbohg/render_kinect). The compilation tested on unbuntu only. It depends on CGAL, OpenCV and some other libraries.
 * [blensor](http://www.blensor.org/). It can only be run from within blender, which is not very convenient.
@@ -58,22 +56,22 @@ Once the test data has been generated you can run the tracker on either the duck
 	runTrackingPCL_Duck.bat
 
 Each of these two batch file will call the executable surfaceAlign with the right set of parameters.
-This will run the executable and open a PCL viewer. You need to press *space* to step from on frame to another. yYou can use th emouse the turn aroud the point clouds.
+This will run the executable and open a PCL viewer. You need to press *space* to step from on frame to another. You can use the mouse the turn around the point clouds.
 
-We get the followong result on the first frame of each sequence:
+We get the following result on the first frame of each sequence:
 
 ![image](./images/pcl_fitting_crate.png)
 
 ![image](./images/pcl_fitting_duck.png)
 
 We find the pose in the first point cloud using functions from the  point cloud library. We use the *SampleConsensusInitialAlignment* method with  *FPFHSignature33* Features.
-Assuming that the object has a only a small deplacement between each sucessive frame, we use the Iterative Closest Point method to refine the pose in each frame using the pose in the previous frame as initialization. We could use a linear dynamic model to predict the pose from previous frames but this is beyong the scope of this project.
+Assuming that the object has a only a small displacement between each successive frame, we use the Iterative Closest Point method to refine the pose in each frame using the pose in the previous frame as initialisation. We could use a linear dynamic model to predict the pose from previous frames but this is beyond the scope of this project.
 
 
 An alternative method could be to use the *surface_matching* OpenCV contribution available in OpenCV 3.4 described [here](https://docs.opencv.org/3.0-beta/modules/surface_matching/doc/surface_matching.html) inspired from [1], with a python example available [here](https://github.com/opencv/opencv_contrib/tree/master/modules/surface_matching/samples)
 In order to get that example running you will need to install the opencv python bindings with the contributions. This method uses [point pair features](https://docs.opencv.org/3.1.0/dc/d9b/classcv_1_1ppf__match__3d_1_1ICP.html). 
 
-Our method do not use the color information. We could use th emethod described in [2] to take advantage of the color. 
+Our method do not use the colour information. We could use the method described in [2] to take advantage of the colour. 
 
 
 ## Possible improvements
@@ -82,7 +80,7 @@ Our method do not use the color information. We could use th emethod described i
 We do not use the information provided in the RGB image. We could extend our method by detecting interest point in the RGB image.
 
 
-We convert the model into a point cloud using only the vertices in the OBJ file that containes the densified model. We could keep the triangles information to get a moe accurate estimate of the normals and use a point to plan distance in the Iterative Closests Point method.
+We convert the model into a point cloud using only the vertices in the OBJ file that contains the densified model. We could keep the triangles information to get a more accurate estimate of the normals and use a point to plan distance in the Iterative Closest Point method.
  
 
 
