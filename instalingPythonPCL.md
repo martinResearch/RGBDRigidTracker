@@ -38,6 +38,10 @@ I had to do those steps
 
 
 troubleshoot:
+install visual studio build tool 2017 and check SDK 2005 during gthe install 
+
+otherwise
+
 * io.h, vcruntime.h, windows.h : i had to search in the progeam files and progeam file(86) folders and edit setup.py to had the folders in the win_kit_incs list
 			win_kit_incs = ['C:\\Program Files (x86)\\Windows Kits\\10\Include\\10.0.17134.0\\ucrt',
 			'C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Community\\VC\Tools\\MSVC\\14.14.26428\\include',
