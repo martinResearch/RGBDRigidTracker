@@ -42,10 +42,10 @@ This will use OpenGL to generate a set of images and point clouds in both the pc
  
 Some alternative methods to generate synthetic data could be to use:
 
- * the PCL method [pcl::RangeImage.createFromPointCloud](http://pointclouds.org/documentation/tutorials/range_image_creation.php). But it would require to generqte a very dense sampling of th esurface first.
+ * the PCL method [pcl::RangeImage.createFromPointCloud](http://pointclouds.org/documentation/tutorials/range_image_creation.php). But it would require to generate a very dense sampling of the surface first.
  *  the PCL's *pcl\_virtual\_scanner\_release.exe* executable with code [here](https://github.com/PointCloudLibrary/pcl/blob/master/tools/virtual_scanner.cpp).  It uses VTK's *vtkCellLocator* function to performe ray / mesh intersections.
- * [render kinect](https://github.com/jbohg/render_kinect). The compilation tested on unbuntu only. It depends on CGAL, OpenCV and some other libraries.
- * [blensor](http://www.blensor.org/). It can only be run from within blender, which is not very convenient.
+ * [render kinect](https://github.com/jbohg/render_kinect). The compilation has been tested on unbuntu only. It depends on CGAL, OpenCV and some other libraries.
+ * [blensor](http://www.blensor.org/). It can only be run from within blender, which is not very convenient. A solution can be to run blender headless (see example [here](https://caretdashcaret.com/2015/05/19/how-to-run-blender-headless-from-the-command-line-without-the-gui/)). 
  * [CGAL](https://www.cgal.org/) ray/surface intersection methods
 
 ## Running the tracking
@@ -110,7 +110,7 @@ this is used by ModernGL. install it using
 
 # Other ressources
 
-* [python-pcl](https://github.com/strawlab/python-pcl) python binding to a small subset of the point cloud library. Looks like some features have been removed (some exmaple do not work anymore, for example *examples\official\Registration\alignment_prerejective.py*). Maybe because it is difficult to keep up with the PCL changes ?
+* [python-pcl](https://github.com/strawlab/python-pcl) python binding to a small subset of the point cloud library. Looks like some features have been removed (some examples do not work anymore, for example *examples\official\Registration\alignment_prerejective.py*). Maybe because it is difficult to keep up with the PCL changes ?
 * [MeshLabXml](https://github.com/3DLIRIOUS/MeshLabXML) is a Python (2.7 or 3) scripting interface to MeshLab, the open source system for processing and editing 3D triangular meshes. We could use the *mlx.remesh.uniform_resampling* method to resample the model and get a dense set of points.
 
 ### References

@@ -75,7 +75,7 @@ def generateRGBD(vertex_data,texture_image,modelTransform,imageSize,focal_length
     texture = ctx.texture(texture_image.size, len(texture_image.split()), texture_image.transpose(Image.FLIP_TOP_BOTTOM).tobytes())
     texture.build_mipmaps()
     
-    # moving the mesh usin the modelTransform
+    # moving the mesh using the modelTransform
    
     originalVertices=np.array(vertex_dataCopy.vert)
     newVertices=originalVertices.dot(modelTransform[:3,:3].T)+modelTransform[:3,3][None,:]
@@ -162,6 +162,7 @@ def generateSequence(objFile,texture_image,sequenceFolder):
     imagesDepth=[]
     pcdFileNames=[]
     maxDepthIntensity=0
+	
     for idFrame in range(nbFrames):
         
         modelTransform=np.array(Matrix44.from_eulers(anglesInterpolated[idFrame]))
@@ -185,18 +186,16 @@ def generateSequence(objFile,texture_image,sequenceFolder):
         ptxFileName=os.path.join(sequenceFolder,'pointCLoud%03.0d.ptx'%idFrame)
         print('Saving %s'%ptxFileName);
         pointCloudIO.savePTX(ptxFileName,  scenePointCloud.reshape(1,-1,3), 255*scenePointCloudColors.reshape(1,-1,3))
-        
 
-   
     imageio.mimsave(os.path.join(sequenceFolder,'rgbd_sequence.gif'), [np.column_stack((im[0],(255*np.tile(im[1][:,:,None],[1,1,3])/maxDepthIntensity).astype(np.uint8))) for im in zip(imagesRGB,imagesDepth)]) 
     
     file = open(os.path.join(sequenceFolder,'pcdSequence.txt'),'w')
     for pcdFileName in pcdFileNames:
         file.write(pcdFileName+'\n') 
-    file.close()         
+    file.close()  
+	
 if __name__ == "__main__":
-    
-    
+     
     objFile='data/crate/crate.obj' 
     texture_image = Image.open('data/crate/T_crate1_D.png')
     sequenceFolder='sequence/crate/'
